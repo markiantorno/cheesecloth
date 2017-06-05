@@ -1,13 +1,11 @@
 package org.hackinghealth.cheesecloth;
 
+import android.app.Activity;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -19,13 +17,10 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ViewPortHandler;
-
-import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -36,60 +31,26 @@ import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class VisualActivity extends AppCompatActivity {
-
-    private class ValueFormatter implements IValueFormatter {
-
-        private DecimalFormat mFormat;
-
-        public ValueFormatter() {
-            mFormat = new DecimalFormat("###,###,##0"); // use one decimal
-        }
-
-        @Override
-        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-            // write your logic here
-            return mFormat.format(value * totalNums); // e.g. append a dollar-sign
-        }
-    }
-
-
-    public class Message {
-        String sender, text, category;
-        double urgency;
-        Date date;
-
-        public Message(Date date, String category){
-            this.date = date;
-            this.category = category;
-        }
-    }
-
-    List <Message> messages;
+public class VisualActivity extends Activity {
 
     final String TITLE = "Categorization of Data";
-    final int [] COLORS = new int[]{Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.CYAN, Color.MAGENTA};
-
+    final int[] COLORS = new int[]{Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.CYAN, Color.MAGENTA};
+    List<Message> messages;
     @BindView(R.id.textView2)
     TextView title;
-
     @BindView(R.id.timebar)
     SeekBar timebar;
-
     @BindView(R.id.pieChart)
     PieChart pieChart;
-
     @BindView(R.id.toggle)
     ToggleButton toggle;
-
-
     boolean showPercentages = false;
-    List <PieEntry> entries;
+    List<PieEntry> entries;
     int totalNums;
-
-    List <String> filters;
+    List<String> filters;
+    List<Integer> catVal;
+    List<String> catName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +66,7 @@ public class VisualActivity extends AppCompatActivity {
         timebar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                title.setText(i+"");
+                title.setText(i + "");
                 calculateFromMessages();
             }
 
@@ -168,11 +129,11 @@ public class VisualActivity extends AppCompatActivity {
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                 PieEntry pe = (PieEntry) e;
+                PieEntry pe = (PieEntry) e;
                 Log.d("TAG", ((PieEntry) e).getLabel());
                 String filter = ((PieEntry) e).getLabel();
-                if(filters != null){
-                    if(!filters.contains(filter)){
+                if (filters != null) {
+                    if (!filters.contains(filter)) {
                         filters.add(filter);
                     }
                 } else {
@@ -213,18 +174,17 @@ public class VisualActivity extends AppCompatActivity {
         });
 
 
-
         this.getValuesFromIntent();
         this.calculateFromMessages();
     }
 
-    private void getValuesFromIntent(){
+    private void getValuesFromIntent() {
         this.messages = new ArrayList<>();
         Random random = new Random();
 
-        for(int i=0; i<30; i++){
+        for (int i = 0; i < 30; i++) {
             Calendar cal = Calendar.getInstance();
-            cal.set(2017,5,5, random.nextInt(23), random.nextInt(60), random.nextInt(60));
+            cal.set(2017, 5, 5, random.nextInt(23), random.nextInt(60), random.nextInt(60));
             Date selDate = cal.getTime();
             Log.d("Date", selDate.toString());
 
@@ -234,13 +194,10 @@ public class VisualActivity extends AppCompatActivity {
 
     }
 
-
-    List <Integer> catVal;
-    List <String> catName;
-    private void calculateFromMessages(){
+    private void calculateFromMessages() {
 
         Calendar cal = Calendar.getInstance();
-        cal.set(2017,5,5,Integer.parseInt(title.getText().toString()),0,0);
+        cal.set(2017, 5, 5, Integer.parseInt(title.getText().toString()), 0, 0);
         Date selDate = cal.getTime();
         Log.d("DATE CALC is", selDate.toString());
 
@@ -252,23 +209,23 @@ public class VisualActivity extends AppCompatActivity {
         this.catVal = new ArrayList<>();
         this.catName = new ArrayList<>();
 
-        for(int i=0; i<this.messages.size(); i++){
+        for (int i = 0; i < this.messages.size(); i++) {
 
 
-                if (this.messages.get(i).date.compareTo(selDate) <= 0) {
-                    if (!this.catName.contains(this.messages.get(i).category)) {
-                        this.catName.add(this.messages.get(i).category);
-                        this.catVal.add(1);
-                    } else {
-                        int ind = this.catName.indexOf(this.messages.get(i).category);
-                        this.catVal.set(ind, this.catVal.get(ind) + 1);
-                    }
+            if (this.messages.get(i).date.compareTo(selDate) <= 0) {
+                if (!this.catName.contains(this.messages.get(i).category)) {
+                    this.catName.add(this.messages.get(i).category);
+                    this.catVal.add(1);
+                } else {
+                    int ind = this.catName.indexOf(this.messages.get(i).category);
+                    this.catVal.set(ind, this.catVal.get(ind) + 1);
                 }
+            }
 
         }
 
-        for(int i=0; i<this.catName.size(); i++){
-            if(this.filters != null) {
+        for (int i = 0; i < this.catName.size(); i++) {
+            if (this.filters != null) {
                 if (this.catVal.get(i) != 0 && !filters.contains(this.catName.get(i))) {
                     float val = (float) 1.0 * this.catVal.get(i) / numValues;
                     entries.add(new PieEntry(val, this.catName.get(i)));
@@ -297,13 +254,38 @@ public class VisualActivity extends AppCompatActivity {
 
     }
 
-    public void addNewMessage(Message ... messagess){
-        for(Message mk : messagess){
+    public void addNewMessage(Message... messagess) {
+        for (Message mk : messagess) {
             this.messages.add(mk);
         }
         this.calculateFromMessages();
     }
 
+    private class ValueFormatter implements IValueFormatter {
+
+        private DecimalFormat mFormat;
+
+        public ValueFormatter() {
+            mFormat = new DecimalFormat("###,###,##0"); // use one decimal
+        }
+
+        @Override
+        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+            // write your logic here
+            return mFormat.format(value * totalNums); // e.g. append a dollar-sign
+        }
+    }
+
+    public class Message {
+        String sender, text, category;
+        double urgency;
+        Date date;
+
+        public Message(Date date, String category) {
+            this.date = date;
+            this.category = category;
+        }
+    }
 
 
 }

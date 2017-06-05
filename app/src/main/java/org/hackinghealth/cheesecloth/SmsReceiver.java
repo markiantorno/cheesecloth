@@ -15,6 +15,8 @@ import org.hackinghealth.cheesecloth.dao.Sender;
 
 import java.util.Date;
 
+import io.realm.Realm;
+
 /**
  * Created by mabushawish on 6/5/17.
  */
@@ -53,6 +55,8 @@ public class SmsReceiver extends BroadcastReceiver {
                             .text(strMessageBody)
                             .date(new Date(timestampMillis))
                             .build();
+
+                    saveMessageToDB(message);
                 }
             }
         }
@@ -87,5 +91,23 @@ public class SmsReceiver extends BroadcastReceiver {
 
         System.out.println("name = " + name);
         return name;
+    }
+
+    private void saveMessageToDB(final Message message) {
+        // SAY YES TO THIS
+        Realm realm = null;
+        try {
+            realm = Realm.getDefaultInstance();
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    realm.insertOrUpdate(message);
+                }
+            });
+        } finally {
+            if (realm != null) {
+                realm.close();
+            }
+        }
     }
 }
