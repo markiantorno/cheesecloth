@@ -52,7 +52,7 @@ public class VisualActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visual);
         ButterKnife.bind(this);
-        
+
 
         this.getValuesFromIntent();
         this.title.setText("PieChart");
