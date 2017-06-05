@@ -26,7 +26,7 @@ public class CollectionWidget extends AppWidgetProvider {
             views.setTextViewText(R.id.info_field, fetched.getSender().getName() + "\n" + fetched.getText());
         } else {
             Log.d("TEST TEST", "NULL NULL");
-        }]\
+        }
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
