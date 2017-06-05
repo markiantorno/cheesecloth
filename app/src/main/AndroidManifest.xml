@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="org.hackinghealth.cheesecloth">
 
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+
     <application
         android:name=".CheeseClothApplication"
         android:allowBackup="true"
@@ -26,6 +30,17 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/collection_widget_info"/>
+        </receiver>
+
+        <receiver
+            android:name=".SmsReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BROADCAST_SMS">
+            <intent-filter
+                android:priority="1000">
+                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+            </intent-filter>
         </receiver>
 
         <!--
