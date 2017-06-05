@@ -27,6 +27,9 @@
       </value>
     </option>
   </component>
+<<<<<<< HEAD
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+=======
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
       <profile-state>
@@ -78,4 +81,5 @@
   <component name="ProjectType">
     <option name="id" value="Android" />
   </component>
+>>>>>>> 56aa019673a6e094e7581dbc4a98f69458f3e565
 </project>
