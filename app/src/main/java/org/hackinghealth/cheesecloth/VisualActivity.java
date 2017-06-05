@@ -134,12 +134,13 @@ public class VisualActivity extends AppCompatActivity {
             @Override
             public void onChartLongPressed(MotionEvent me) {
 
+
             }
 
             @Override
             public void onChartDoubleTapped(MotionEvent me) {
                 filters = null;
-                calculateFromMessages();;
+                calculateFromMessages();
             }
 
             @Override
@@ -181,11 +182,11 @@ public class VisualActivity extends AppCompatActivity {
 
                 calculateFromMessages();
                 pieChart.setSelected(false);
+
             }
 
             @Override
             public void onNothingSelected() {
-
             }
         });
 
