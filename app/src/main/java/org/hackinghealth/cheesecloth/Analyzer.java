@@ -1,5 +1,7 @@
 package org.hackinghealth.cheesecloth;
 
+import org.hackinghealth.cheesecloth.widget.VisualActivity;
+
 import java.util.List;
 
 /**
@@ -8,16 +10,16 @@ import java.util.List;
 
 public class Analyzer {
 
-    static List<VisualActivity.Message> allMessages;
-    static int [] numReceivedPerTime = new int[24];
+//    static List<VisualActivity.Message> allMessages;
+//    static int [] numReceivedPerTime = new int[24];
     static int [] max = new int[2];
 
     public static void analyze(){
-        for(VisualActivity.Message message : Analyzer.allMessages){
-            numReceivedPerTime[message.date.getHours()] += 1;
-        }
+//        for(VisualActivity.Message message : Analyzer.allMessages){
+//            numReceivedPerTime[message.g.getHours()] += 1;
+//        }
 
-        Analyzer.max = findMax(Analyzer.numReceivedPerTime);
+//        Analyzer.max = findMax(Analyzer.numReceivedPerTime);
     }
 
     private static int [] findMax(int [] arr){

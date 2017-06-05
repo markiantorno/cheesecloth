@@ -8,13 +8,22 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center">
-        <TextView
-            android:id="@+id/info_field"
+        <!--<TextView-->
+            <!--android:id="@+id/info_field"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="@color/colorPrimaryDark"-->
+            <!--android:textColor="@color/colorAccent">-->
+        <!--</TextView>-->
+
+        <!--<com.github.mikephil.charting.charts.RadarChart-->
+            <!--android:id="@+id/chart1"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight="1" />-->
+        <org.hackinghealth.cheesecloth.widget.CustomChartView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimaryDark"
-            android:textColor="@color/colorAccent">
-        </TextView>
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
 </FrameLayout>

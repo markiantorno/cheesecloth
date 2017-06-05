@@ -1,4 +1,4 @@
-package org.hackinghealth.cheesecloth;
+package org.hackinghealth.cheesecloth.widget;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
