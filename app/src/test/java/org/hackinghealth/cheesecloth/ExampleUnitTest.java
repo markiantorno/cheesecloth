@@ -1,4 +1,4 @@
-package com.udacity.horatio.widgetexample;
+package org.hackinghealth.cheesecloth;
 
 import org.junit.Test;
 
