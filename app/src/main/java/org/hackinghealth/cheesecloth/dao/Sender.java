@@ -15,6 +15,11 @@ public class Sender extends RealmObject {
 
     }
 
+    public Sender(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
+
     private Sender(Builder builder) {
         setName(builder.name);
         setAddress(builder.address);
@@ -72,5 +77,13 @@ public class Sender extends RealmObject {
         public Sender build() {
             return new Sender(this);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Sender{" +
+                "name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                '}';
     }
 }

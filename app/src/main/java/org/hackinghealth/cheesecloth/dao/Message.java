@@ -12,16 +12,19 @@ public class Message extends RealmObject {
 
     private Sender sender;
     private String text;
-    private Date date;
 
     public Message() {
 
     }
 
+    public Message(Sender sender, String text) {
+        this.sender = sender;
+        this.text = text;
+    }
+
     private Message(Builder builder) {
         setSender(builder.sender);
         setText(builder.text);
-        setDate(builder.date);
     }
 
     public static Builder newBuilder() {
@@ -32,7 +35,6 @@ public class Message extends RealmObject {
         Builder builder = new Builder();
         builder.sender = copy.sender;
         builder.text = copy.text;
-        builder.date = copy.date;
         return builder;
     }
 
@@ -54,22 +56,12 @@ public class Message extends RealmObject {
         return this;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public Message setDate(Date date) {
-        this.date = date;
-        return this;
-    }
-
     /**
      * {@code Message} builder static inner class.
      */
     public static final class Builder {
         private Sender sender;
         private String text;
-        private Date date;
 
         private Builder() {
         }
@@ -97,17 +89,6 @@ public class Message extends RealmObject {
         }
 
         /**
-         * Sets the {@code date} and returns a reference to this Builder so that the methods can be chained together.
-         *
-         * @param val the {@code date} to set
-         * @return a reference to this Builder
-         */
-        public Builder date(Date val) {
-            date = val;
-            return this;
-        }
-
-        /**
          * Returns a {@code Message} built from the parameters previously set.
          *
          * @return a {@code Message} built with parameters of this {@code Message.Builder}
@@ -115,5 +96,13 @@ public class Message extends RealmObject {
         public Message build() {
             return new Message(this);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "sender=" + sender +
+                ", text='" + text + '\'' +
+                '}';
     }
 }

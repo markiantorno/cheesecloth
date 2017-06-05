@@ -21,8 +21,11 @@ public class MainActivity extends AppCompatActivity {
         initSomeDummyData();
         Log.d("HHHHHHH", "DUMMY DATA INSERTED");
 
-        EasyPermissions.requestPermissions(this, "",
+        EasyPermissions.requestPermissions(this, "This app needs SMS to sort thems",
                 1001, Manifest.permission.READ_SMS);
+
+        EasyPermissions.requestPermissions(this, "This app needs SMS to sort thems",
+                1001, Manifest.permission.READ_CONTACTS);
     }
 
     protected void initSomeDummyData() {
