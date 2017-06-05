@@ -3,6 +3,7 @@
     package="org.hackinghealth.cheesecloth">
 
     <application
+        android:name=".CheeseClothApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

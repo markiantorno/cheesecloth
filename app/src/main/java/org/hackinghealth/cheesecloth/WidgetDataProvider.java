@@ -1,7 +1,9 @@
 package org.hackinghealth.cheesecloth;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -12,7 +14,15 @@ import java.util.List;
  * WidgetDataProvider acts as the adapter for the collection view widget,
  * providing RemoteViews to the widget in the getViewAt method.
  */
-public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory {
+public class WidgetDataProvider extends BroadcastReceiver implements RemoteViewsService.RemoteViewsFactory {
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+
+        }
+    }
 
     private static final String TAG = "WidgetDataProvider";
 
@@ -72,10 +82,7 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
     }
 
     private void initData() {
-        mCollection.clear();
-        for (int i = 1; i <= 10; i++) {
-            mCollection.add("ListView item " + i);
-        }
+
     }
 
 }
