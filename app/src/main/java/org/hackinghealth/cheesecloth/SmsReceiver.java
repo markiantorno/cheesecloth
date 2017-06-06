@@ -152,16 +152,14 @@ public class SmsReceiver extends BroadcastReceiver {
                 Log.d("NULL", "CALSSIFIER WASS NULL");
             }
 
-            Intent i = new Intent("android.appwidget.action.APPWIDGET_UPDATE");
-            mContext.sendBroadcast(i);
-
-            int widgetIDs[] = AppWidgetManager.getInstance(mContext).getAppWidgetIds(new ComponentName(mContext, CollectionWidget.class));
-
 
         } finally {
             if (realm != null) {
                 realm.close();
             }
         }
+
+        CollectionWidget.update(mContext);
+
     }
 }
