@@ -220,8 +220,20 @@ public class VisualActivity extends AppCompatActivity {
         int pos = messages.indexOf(book);
         messages.remove(book);
         adapter.notifyItemRemoved(pos);
-        // adapter.notifyDataSetChanged();
         calculateFromMessages();
+
+        final List<Message> filteredMessages = new ArrayList<>();
+        for (int i = 0; i < messages.size(); i++) {
+            if (messages.get(i).getCategory().equals(selected)) {
+                filteredMessages.add(messages.get(i));
+            }
+        }
+
+        Collections.sort(filteredMessages, new CustomComparator());
+
+        adapter = new YourAdapter(getBaseContext(), filteredMessages);
+        listview.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        listview.setAdapter(adapter);
         return pos;
     }
 

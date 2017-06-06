@@ -1,8 +1,10 @@
 package org.hackinghealth.cheesecloth.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -36,6 +38,8 @@ import io.realm.RealmResults;
  * Implementation of App Widget functionality.
  */
 public class CollectionWidget extends AppWidgetProvider {
+
+    public static String ACTION = "MyACTION";
 
     final static int [] COLORS = new int[]{Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.CYAN, Color.MAGENTA};
 
@@ -74,7 +78,20 @@ public class CollectionWidget extends AppWidgetProvider {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
 
+
+        System.out.println("appWidgetId = ");
+        Intent intent = new Intent(context, VisualActivity.class);
+        intent.setAction("MyACTION");
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.collection_widget);
+        views.setOnClickPendingIntent(R.id.chart_field, pendingIntent);
+  //      appWidgetManager.updateAppWidget(appWidgetId, views);
+
+
+
     }
+
+
 
     protected void init() {
         mRealm = Realm.getInstance(CheeseClothApplication.getRealmConfiguration());
@@ -103,19 +120,6 @@ public class CollectionWidget extends AppWidgetProvider {
         return chartBitmap;
 
 
-//        this.pieChart.invalidate();
-
-//
-//        ArrayList<IRadarDataSet> dataSets = new ArrayList<IRadarDataSet>();
-//        dataSets.add(set); // add the dataset
-//
-//        // create a data object with the dataset list
-//        RadarData data = new RadarData(dataSets);
-//        styleData(data);
-//
-//        // set data
-//        mChart.setData(null);
-//        mChart.animateY(1400);
     }
 
 
