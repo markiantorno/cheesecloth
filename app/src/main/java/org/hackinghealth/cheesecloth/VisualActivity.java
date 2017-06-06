@@ -66,16 +66,12 @@ public class VisualActivity extends AppCompatActivity {
     List<Message> messages;
 
     final String TITLE = "Categorization of Data";
-    final int[] COLORS = new int[]{Color.GREEN, Color.MAGENTA, Color.BLUE, Color.YELLOW, Color.CYAN};
-
-//    final int[] temp = new int[]{
-//            Color.argb(255, 255, 66, 66),
-//            Color.argb(255, 244, 110, 66),
-//            Color.argb(255, 244, 155, 66),
-//            Color.argb(255, 244, 212, 66),
-//            Color.argb(255, 200, 244, 66),
-//            Color.argb(255, 122, 244, 66),
-//    };
+    final int[] COLORS = new int[]{
+           Color.argb(255, 107,177,140),
+            Color.argb(255,235,203,148),
+            Color.argb(255,239,150,136),
+            Color.argb(255,220,98,111)
+    };
 
     @BindView(R.id.pieChart)
     PieChart pieChart;
