@@ -131,7 +131,7 @@ public class CustomChartView extends RelativeLayout {
         piechart.setHoleColor(Color.TRANSPARENT);
         piechart.setHoleRadius(20);
 
-        piechart.setEntryLabelColor(Color.WHITE);
+        piechart.setEntryLabelColor(Color.BLACK);
         piechart.setEntryLabelTextSize(20);
         piechart.setEntryLabelTypeface(mTf);
 

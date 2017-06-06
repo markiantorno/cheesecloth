@@ -178,6 +178,7 @@ public class VisualActivity extends AppCompatActivity {
 
                 RealmResults <Message> results = realm.where(Message.class).equalTo("sender.address", addr).findAll();
                 messages = results;
+                sortMessages(results);
 //
 //                final List<Message> filteredMessages = new ArrayList<>();
 //                for (int i = 0; i < messages.size(); i++) {
@@ -200,6 +201,43 @@ public class VisualActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected() {
                 selected = "";
+
+                Log.d("SELECTED", selected);
+
+                //1111 personal
+                //2222 personal
+                //3333 partner
+
+                Realm realm = Realm.getInstance(CheeseClothApplication.getRealmConfiguration());
+
+                String addr;
+                if (selected.equals("Work")) {
+                    addr = "2222";
+                } else if (selected.equals("Personal")) {
+                    addr = "1111";
+                } else {
+                    addr = "3333";
+                }
+
+                RealmResults <Message> results = realm.where(Message.class).findAll();
+                messages = results;
+                sortMessages(results);
+//
+//                final List<Message> filteredMessages = new ArrayList<>();
+//                for (int i = 0; i < messages.size(); i++) {
+//                    if (messages.get(i).getCategory().equals(selected)) {
+//                        filteredMessages.add(messages.get(i));
+//                    }
+//                }
+//
+//                Collections.sort(filteredMessages, new CustomComparator());
+
+                adapter = new YourAdapter(getBaseContext(), results);
+                listview.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+                listview.setAdapter(adapter);
+
+
+                System.out.println("filteredMessages.size() = " + results.size());
             }
         });
 
@@ -208,6 +246,10 @@ public class VisualActivity extends AppCompatActivity {
         Realm realm = Realm.getInstance(CheeseClothApplication.getRealmConfiguration());
         RealmResults <Message> results = realm.where(Message.class).findAll();
         messages = results;
+        sortMessages(results);
+
+
+
 
         this.adapter = new YourAdapter(this, results);
         listview.setLayoutManager(new LinearLayoutManager(getBaseContext()));
@@ -241,6 +283,25 @@ public class VisualActivity extends AppCompatActivity {
         });
 
 
+    }
+
+
+    private void sortMessages(RealmResults <Message> messages){
+     //   messages.sort("urgency");
+//        boolean sorted = false;
+//        while(!sorted){
+//            sorted = true;
+//            for(int i=0; i<messages.size()-1; i++){
+//                for(int j=i+1; j<messages.size(); j++){
+//                    if(messages.get(i).getUrgency() < messages.get(j).getUrgency()){
+//                        Message temp = messages.get(i);
+//                        messages.set(i, messages.get(j));
+//                        messages.set(j, temp);
+//                        sorted = false;
+//                    }
+//                }
+//            }
+//        }
     }
 
     private int removeMessage(Message book) {
