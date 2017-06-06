@@ -58,7 +58,7 @@ class Classifier {
         // TODO: Magical binning algorithm!
         var categoryAssociations: MutableList<CategoryAssociation> = mutableListOf()
         for (category in categories) {
-            var accumulator: Double = 0.0
+            var accumulator: Float = 0.0f
             var quantity: Int = 0
             for (tag in category.tags) {
                 var index: Int = 0
@@ -79,7 +79,7 @@ class Classifier {
                 }
             }
 
-            val avg: Double = if (quantity > 0) accumulator / quantity else 0.0
+            val avg: Float = if (quantity > 0) (accumulator / quantity) else 0.0f
             categoryAssociations.add(CategoryAssociation(category, avg))
         }
         return categoryAssociations.toTypedArray()
@@ -140,49 +140,49 @@ fun populate() {
     )
 
     val workTags = arrayListOf(
-            Tag("blood", 0.75),
-            Tag("lab", 0.95),
-            Tag("x-ray", 1.0),
-            Tag("xray", 1.0)
+            Tag("blood", 0.75f),
+            Tag("lab", 0.95f),
+            Tag("x-ray", 1.0f),
+            Tag("xray", 1.0f)
     )
 
     val workSenderTags = arrayListOf(
-            Tag(john.address, -1.0),
-            Tag(laura.address, -1.0),
-            Tag(mary.address, 1.0),
-            Tag(liu.address, 1.0),
-            Tag(HRDept.address, 0.5)
+            Tag(john.address, -1.0f),
+            Tag(laura.address, -1.0f),
+            Tag(mary.address, 1.0f),
+            Tag(liu.address, 1.0f),
+            Tag(HRDept.address, 0.5f)
     )
 
     val personalTags = arrayListOf(
-            Tag("dinner", 1.0),
-            Tag("sweetheart", 1.0),
-            Tag("x-ray", -1.0),
-            Tag("xray", -1.0)
+            Tag("dinner", 1.0f),
+            Tag("sweetheart", 1.0f),
+            Tag("x-ray", -1.0f),
+            Tag("xray", -1.0f)
     )
 
     val personalSenderTags = arrayListOf(
-            Tag(john.address, 1.0),
-            Tag(laura.address, 1.0),
-            Tag(mary.address, -1.0),
-            Tag(liu.address, -1.0),
-            Tag(HRDept.address, 0.5)
+            Tag(john.address, 1.0f),
+            Tag(laura.address, 1.0f),
+            Tag(mary.address, -1.0f),
+            Tag(liu.address, -1.0f),
+            Tag(HRDept.address, 0.5f)
     )
 
     val priorityContentTags = arrayOf(
-            Tag("blood", 0.75),
-            Tag("lab", 0.5),
-            Tag("x-ray", 1.0),
-            Tag("xray", 1.0),
-            Tag("dinner", -0.5)
+            Tag("blood", 0.75f),
+            Tag("lab", 0.5f),
+            Tag("x-ray", 1.0f),
+            Tag("xray", 1.0f),
+            Tag("dinner", -0.5f)
     )
 
     val prioritySenderTags = arrayOf(
-            Tag(john.address, 1.0),
-            Tag(laura.address, 0.25),
-            Tag(mary.address, 1.0),
-            Tag(liu.address, 0.5),
-            Tag(HRDept.address, -1.0)
+            Tag(john.address, 1.0f),
+            Tag(laura.address, 0.25f),
+            Tag(mary.address, 1.0f),
+            Tag(liu.address, 0.5f),
+            Tag(HRDept.address, -1.0f)
     )
 
 ///////////////////////////
@@ -190,8 +190,10 @@ fun populate() {
 ///////////////////////////
     val workCategory = Category("Work", workTags, workSenderTags)
     val personalCategory = Category("Personal", personalTags, personalSenderTags)
+    val partenerCategory = Category("Partener", personalTags, personalSenderTags)
+
     val classifier = Classifier()
-    classifier.initialize(arrayOf(workCategory, personalCategory), priorityContentTags, prioritySenderTags)
+    classifier.initialize(arrayOf(workCategory, personalCategory, partenerCategory), priorityContentTags, prioritySenderTags)
 
 ////////////////////////////
 // Classify Test Messages //
