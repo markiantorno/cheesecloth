@@ -1,5 +1,6 @@
 package org.hackinghealth.cheesecloth.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -15,8 +16,7 @@ import android.widget.RemoteViews;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 
-import org.hackinghealth.cheesecloth.CheeseClothApplication;
-import org.hackinghealth.cheesecloth.R;
+import org.hackinghealth.cheesecloth.*;
 import org.hackinghealth.cheesecloth.dao.CategoryAssociation;
 
 import io.realm.Realm;
@@ -65,6 +65,11 @@ public class CollectionWidget extends AppWidgetProvider {
 //        }
 //        // Instruct the widget manager to update the widget
         views.setImageViewBitmap(R.id.chart_field, setData());
+
+        Intent intent = new Intent(context, org.hackinghealth.cheesecloth.VisualActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+
+        views.setOnClickPendingIntent(R.id.chart_field, pendingIntent);
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
