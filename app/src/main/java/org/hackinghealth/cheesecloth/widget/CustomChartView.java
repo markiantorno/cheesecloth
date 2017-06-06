@@ -3,6 +3,7 @@ package org.hackinghealth.cheesecloth.widget;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -37,6 +38,11 @@ public class CustomChartView extends RelativeLayout {
 
     final int [] COLORS = new int[]{Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.CYAN, Color.MAGENTA};
 
+    public static final int[] VORDIPLOM_COLORS = {
+            Color.rgb(191, 217, 218), Color.rgb(69, 118, 118), Color.rgb(97, 145, 157), Color.rgb(114, 137, 111),
+            Color.rgb(163, 163, 129)
+    };
+
     protected View mRootView;
     static protected Typeface mTf;
     protected Realm mRealm;
@@ -60,17 +66,18 @@ public class CustomChartView extends RelativeLayout {
     }
 
     protected void init() {
+
         mRootView = inflate(getContext(), R.layout.widget_chart, this);
         ButterKnife.bind(mRootView);
-        mTf = Typeface.createFromAsset(getContext().getAssets(), "NotoSans-Regular.ttf");
+        mTf = Typeface.createFromAsset(getContext().getAssets(), "fonts/NotoSans-Regular.ttf");
 
         mRealm = Realm.getInstance(CheeseClothApplication.getRealmConfiguration());
         setData();
     }
 
-    protected void styleData(ChartData data) {
+    protected static void styleData(ChartData data) {
         data.setValueTypeface(mTf);
-        data.setValueTextSize(14f);
+        data.setValueTextSize(25f);
         data.setValueTextColor(Color.DKGRAY);
         data.setValueFormatter(new PercentFormatter());
     }
@@ -117,25 +124,28 @@ public class CustomChartView extends RelativeLayout {
 
         PieDataSet set = new PieDataSet(entries, "Messages");
 
-        set.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        set.setColors(VORDIPLOM_COLORS);
         set.setLabel("");
 
-        set.setSliceSpace(2);
+        set.setSliceSpace(0);
 
         PieData data = new PieData(set);
-        set.setValueTextColor(Color.BLACK);
-        set.setValueTextSize(20);
+
+        set.setValueTextColor( Color.argb(160, 0, 0, 0));
+        set.setValueTextSize(22);
+        set.setValueTypeface(mTf);
+
         // create a data object with the dataset list
         piechart.setData(data);
         piechart.setBackgroundColor(Color.TRANSPARENT);
         piechart.setHoleColor(Color.TRANSPARENT);
-        piechart.setHoleRadius(20);
+        piechart.setHoleRadius(50);
 
-        piechart.setEntryLabelColor(Color.BLACK);
+        piechart.setEntryLabelColor( Color.argb(160, 0, 0, 0));
         piechart.setEntryLabelTextSize(20);
         piechart.setEntryLabelTypeface(mTf);
 
-        piechart.setTransparentCircleRadius(20);
+        piechart.setTransparentCircleRadius(50);
         piechart.getLegend().setEnabled(false);
         Description description = new Description();
         description.setText("");

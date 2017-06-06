@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:tag="front"
-        android:background="#4ac29a">
+        android:background="@color/b2">
 
 
         <TextView
