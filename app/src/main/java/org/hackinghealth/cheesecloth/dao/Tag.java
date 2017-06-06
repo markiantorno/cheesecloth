@@ -9,13 +9,13 @@ import io.realm.RealmObject;
 public class Tag extends RealmObject {
 
     public String text;
-    public Double weight;
+    public Float weight;
 
     public Tag() {
 
     }
 
-    public Tag(String text, Double weight) {
+    public Tag(String text, Float weight) {
         this.text = text;
         this.weight = weight;
     }
@@ -29,11 +29,11 @@ public class Tag extends RealmObject {
         return this;
     }
 
-    public Double getWeight() {
+    public Float getWeight() {
         return weight;
     }
 
-    public Tag setWeight(Double weight) {
+    public Tag setWeight(Float weight) {
         this.weight = weight;
         return this;
     }

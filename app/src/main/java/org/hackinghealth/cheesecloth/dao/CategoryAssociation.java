@@ -9,13 +9,15 @@ import io.realm.RealmObject;
 public class CategoryAssociation extends RealmObject {
 
     public Category category;
-    public Double weight = 1.0;
+    public String cat_name;
+    public Float weight = 1.0f;
 
     public CategoryAssociation() {
     }
 
-    public CategoryAssociation(Category category, Double weight) {
+    public CategoryAssociation(Category category, Float weight) {
         this.category = category;
+        this.cat_name = category.name;
         this.weight = weight;
     }
 
@@ -25,15 +27,25 @@ public class CategoryAssociation extends RealmObject {
 
     public CategoryAssociation setCategory(Category category) {
         this.category = category;
+        this.cat_name = category.name;
         return this;
     }
 
-    public Double getWeight() {
+    public Float getWeight() {
         return weight;
     }
 
-    public CategoryAssociation setWeight(Double weight) {
+    public CategoryAssociation setWeight(Float weight) {
         this.weight = weight;
+        return this;
+    }
+
+    public String getCat_name() {
+        return cat_name;
+    }
+
+    public CategoryAssociation setCat_name(String cat_name) {
+        this.cat_name = cat_name;
         return this;
     }
 
@@ -41,6 +53,7 @@ public class CategoryAssociation extends RealmObject {
     public String toString() {
         return "CategoryAssociation{" +
                 "category=" + category +
+                ", cat_name='" + cat_name + '\'' +
                 ", weight=" + weight +
                 '}';
     }

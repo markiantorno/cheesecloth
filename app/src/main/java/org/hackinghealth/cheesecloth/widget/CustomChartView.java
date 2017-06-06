@@ -7,22 +7,27 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.RadarData;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.data.realm.implementation.RealmPieDataSet;
 import com.github.mikephil.charting.formatter.PercentFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.hackinghealth.cheesecloth.CheeseClothApplication;
 import org.hackinghealth.cheesecloth.R;
+import org.hackinghealth.cheesecloth.dao.CategoryAssociation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 /**
@@ -31,12 +36,14 @@ import io.realm.RealmResults;
 
 public class CustomChartView extends RelativeLayout {
 
+    final int [] COLORS = new int[]{Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.CYAN, Color.MAGENTA};
+
     protected View mRootView;
     protected Typeface mTf;
     protected Realm mRealm;
 
-    @BindView(R.id.radar_chart)
-    RadarChart mRadarChart;
+    @BindView(R.id.pie_chart)
+    org.hackinghealth.cheesecloth.widget.PieChart mPieChart;
 
     public CustomChartView(Context context) {
         super(context);
@@ -59,7 +66,7 @@ public class CustomChartView extends RelativeLayout {
         mTf = Typeface.createFromAsset(getContext().getAssets(), "NotoSans-Regular.ttf");
 
         mRealm = Realm.getInstance(CheeseClothApplication.getRealmConfiguration());
-
+        setData();
     }
 
     protected void styleData(ChartData data) {
@@ -71,29 +78,57 @@ public class CustomChartView extends RelativeLayout {
 
     private void setData() {
 
-//        RealmResults<RealmDemoData> result = mRealm.where(RealmDemoData.class).findAll();
-//
-//        //RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex"); // normal entries
-//        RealmRadarDataSet<RealmDemoData> set = new RealmRadarDataSet<RealmDemoData>(result, "yValue"); // stacked entries
-//        set.setLabel("Realm RadarDataSet");
-//        set.setDrawFilled(true);
-//        set.setColor(ColorTemplate.rgb("#009688"));
-//        set.setFillColor(ColorTemplate.rgb("#009688"));
-//        set.setFillAlpha(130);
-//        set.setLineWidth(2f);
-//
-//        ArrayList<IRadarDataSet> dataSets = new ArrayList<IRadarDataSet>();
-//        dataSets.add(set); // add the dataset
-//
-//        // create a data object with the dataset list
-//        RadarData data = new RadarData(dataSets);
-//        styleData(data);
-//
-//        // set data
-//        mChart.setData(null);
-//        mChart.animateY(1400);
+        mPieChart = CustomChartView.styleChart(mRealm, mPieChart);
+        mPieChart.animateY(1400);
+
     }
 
+    public static org.hackinghealth.cheesecloth.widget.PieChart styleChart(Realm mRealm, org.hackinghealth.cheesecloth.widget.PieChart piechart) {
+        RealmResults<CategoryAssociation> result = mRealm.where(CategoryAssociation.class).findAll();
 
+        HashMap<String, Float> summation = new HashMap<>();
 
+        ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
+
+        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
+        // the chart.
+        float lowestVal = 0;
+        for (CategoryAssociation cat : result) {
+            if (summation.containsKey(cat.getCategory().getName())) {
+                summation.put(cat.getCategory().getName(), summation.get(cat.getCategory().getName()) + cat.getWeight());
+            } else {
+                summation.put(cat.getCategory().getName(), cat.getWeight());
+            }
+            if (summation.get(cat.getCategory().getName()) < lowestVal) {
+                lowestVal = summation.get(cat.getCategory().getName());
+            }
+        }
+
+        Iterator it = summation.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            entries.add(new PieEntry((Float) pair.getValue() + Math.abs(lowestVal) + 1,
+                    (String) pair.getKey()));
+            it.remove(); // avoids a ConcurrentModificationException
+        }
+
+        //RealmBarDataSet<RealmDemoData> set = new RealmBarDataSet<RealmDemoData>(result, "stackValues", "xIndex"); // normal entries
+//        MyDataSet<CategoryAssociation> set = new MyDataSet<CategoryAssociation>(result, "weight", "cat_name");
+
+        PieDataSet set = new PieDataSet(entries, "Messages");
+
+        set.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        set.setLabel("");
+
+        set.setSliceSpace(2);
+
+        PieData data = new PieData(set);
+        set.setValueTextColor(Color.BLACK);
+        set.setValueTextSize(20);
+        // create a data object with the dataset list
+        piechart.setData(data);
+        piechart.setBackgroundColor(Color.TRANSPARENT);
+        return piechart;
+
+    }
 }
