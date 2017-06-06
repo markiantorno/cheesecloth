@@ -40,7 +40,7 @@ class Classifier {
     /**
      *  Processes a message and calls a callback when weighting and categorization are done.
      */
-    fun processMessage(message: Message, context: Context, callback: (Message, Array<CategoryAssociation>, Double?) -> Unit) {
+    public fun processMessage(message: Message, callback: (Message, Array<CategoryAssociation>, Double?) -> Unit) {
         var categories = categoriesForMessage(message)
         var weight = weightForMessage(message)
 
@@ -114,17 +114,17 @@ class Classifier {
 /**
  *  Test driver.
  */
-fun populate() {
+
+fun populate(): Classifier {
 
 ////////////////////
 // Dummy Messages //
 ////////////////////
-
     val john = Sender("John Doe", "john.doe@email.com")
-    val laura = Sender("Laura Smith", "laura.smith@email.com")
-    val mary = Sender("Mary York", "mary.york@work.com")
+    val laura = Sender("Laura Smith", "1111")
+    val mary = Sender("Mary York", "3333")
     val liu = Sender("Liu Wang", "wang.liu@work.com")
-    val HRDept = Sender("HR Dept.", "hr@work.com")
+    val HRDept = Sender("HR Dept.", "2222")
     val dummyWorkMessages = arrayListOf(
             Message(mary, "You have a bloodtest to pick up in lab B."),
             Message(liu, "Remember to donate to the blood drive this Friday."),
@@ -190,7 +190,7 @@ fun populate() {
 ///////////////////////////
     val workCategory = Category("Work", workTags, workSenderTags)
     val personalCategory = Category("Personal", personalTags, personalSenderTags)
-    val partenerCategory = Category("Partener", personalTags, personalSenderTags)
+    val partenerCategory = Category("Partner", personalTags, personalSenderTags)
 
     val classifier = Classifier()
     classifier.initialize(arrayOf(workCategory, personalCategory, partenerCategory), priorityContentTags, prioritySenderTags)
@@ -204,7 +204,7 @@ fun populate() {
 
         CheeseClothDatabaseHelper.writeMessageToDB(message)
 
-        classifier.processMessage(message, Context(), { message, categories, weight ->
+        classifier.processMessage(message, { message, categories, weight ->
 
             if ((weight ?: 0.0) > 0.0) {
                 for (categoryAssoc in categories) {
@@ -231,4 +231,6 @@ fun populate() {
     for ((k, v) in priorityMap) {
         println("${k.name} = $v")
     }
+
+    return classifier
 }
