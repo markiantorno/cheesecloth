@@ -5,6 +5,7 @@ import android.util.Log;
 import org.hackinghealth.cheesecloth.CheeseClothApplication;
 
 import io.realm.Realm;
+import io.realm.exceptions.RealmMigrationNeededException;
 
 /**
  * Created by miantorno on 6/5/17.
@@ -14,7 +15,14 @@ public class CheeseClothDatabaseHelper {
 
     public static Realm getRealm() {
 
-        Realm realm = Realm.getInstance(CheeseClothApplication.getRealmConfiguration());
+        Realm realm;
+
+        try {
+            realm = Realm.getInstance(CheeseClothApplication.getRealmConfiguration());
+        } catch (RealmMigrationNeededException r) {
+            Realm.deleteRealm(CheeseClothApplication.getRealmConfiguration());
+            realm = Realm.getInstance(CheeseClothApplication.getRealmConfiguration());
+        }
         return realm;
 
     }

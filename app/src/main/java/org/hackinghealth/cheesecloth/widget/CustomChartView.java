@@ -7,12 +7,11 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.data.realm.implementation.RealmPieDataSet;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
@@ -128,6 +127,16 @@ public class CustomChartView extends RelativeLayout {
         // create a data object with the dataset list
         piechart.setData(data);
         piechart.setBackgroundColor(Color.TRANSPARENT);
+        piechart.setHoleColor(Color.TRANSPARENT);
+        piechart.setHoleRadius(20);
+        piechart.setTransparentCircleRadius(20);
+        piechart.getLegend().setEnabled(false);
+        Description description = new Description();
+        description.setText("");
+        piechart.setDescription(description);
+        piechart.setDrawEntryLabels(false);
+        piechart.setUsePercentValues(true);
+        data.setDrawValues(false);
         return piechart;
 
     }
