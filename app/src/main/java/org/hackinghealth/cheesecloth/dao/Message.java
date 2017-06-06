@@ -1,6 +1,7 @@
 package org.hackinghealth.cheesecloth.dao;
 
 import java.util.Date;
+import java.util.Random;
 
 import io.realm.RealmObject;
 
@@ -10,8 +11,38 @@ import io.realm.RealmObject;
 
 public class Message extends RealmObject {
 
+    private static double randomDouble(){
+        Random rand = new Random();
+        return rand.nextDouble();
+    }
+
+    private static int randomInt(){
+        Random rand = new Random();
+        return rand.nextInt(5);
+    }
+
     private Sender sender;
     private String text;
+
+    private Date date;
+    private double urgency = Message.randomDouble();
+    private String category = "Category " + randomInt();
+
+    public double getUrgency(){
+        return this.urgency;
+    }
+
+    public String getCategory(){
+        return this.category;
+    }
+
+    public void setCategory(String category){
+        this.category = category;
+    }
+
+    public void setUrgency(double urgency){
+        this.urgency = urgency;
+    }
 
     public Message() {
 
@@ -56,6 +87,17 @@ public class Message extends RealmObject {
         return this;
     }
 
+
+    public Date getDate() {
+        return date;
+    }
+
+    public Message setDate(Date date) {
+        this.date = date;
+        return this;
+    }
+
+
     /**
      * {@code Message} builder static inner class.
      */
@@ -87,6 +129,8 @@ public class Message extends RealmObject {
             text = val;
             return this;
         }
+
+
 
         /**
          * Returns a {@code Message} built from the parameters previously set.
