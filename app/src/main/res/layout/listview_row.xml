@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!-- this view reveals when swipe right -->
+    <RelativeLayout
+        android:tag="reveal-right"
+        android:background="@android:color/holo_blue_bright"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:text="REMOVE"/>
+    </RelativeLayout>
+
+
+    <!-- this view reveals when swipe left -->
+    <RelativeLayout
+        android:tag="reveal-left"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:text="REPLY"/>
+    </RelativeLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:tag="front"
+        android:background="#4ac29a">
+
+
+        <TextView
+            android:id="@+id/senderView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:textColor="@android:color/white"
+            android:layout_marginLeft="26dp"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="10dp"
+            android:textSize="25dp"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/messageView"
+            android:textColor="#BFFFFFFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/senderView"
+            android:layout_alignStart="@+id/senderView"
+            android:layout_below="@+id/senderView"
+            android:layout_marginTop="10dp"
+            android:textSize="15dp"
+            android:layout_marginBottom="10dp"
+            android:text="TextView" />
+
+        <View android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_toRightOf="@id/senderView"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="13dp"
+            android:background="@drawable/circle"
+            android:id="@+id/circleView"/>
+
+
+
+    </RelativeLayout>
+
+
+
+    <!-- just a divider -->
+    <View android:background="@android:color/black"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp" />
+
+</FrameLayout>
+
