@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Debug;
+import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -51,6 +52,7 @@ public class CollectionWidget extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
+
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.collection_widget);
         mTf = Typeface.createFromAsset(context.getAssets(), "fonts/NotoSans-Regular.ttf");
         mPieChart = new org.hackinghealth.cheesecloth.widget.PieChart(context);
@@ -71,6 +73,9 @@ public class CollectionWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+
+        Log.d("POOOOOOOOOOOP", "POOOOOOOOOOOOOOOOOOOOOOOOOOOP");
+
         // There may be multiple widgets active, so update all of them
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         init();
@@ -106,7 +111,7 @@ public class CollectionWidget extends AppWidgetProvider {
 
     private static Bitmap setData() {
 
-        mPieChart = CustomChartView.styleChart(mRealm, mPieChart);
+        mPieChart = CustomChartView.styleChart(mRealm, mPieChart, true);
 
         mPieChart.measure(View.MeasureSpec.makeMeasureSpec(1000,View.MeasureSpec.EXACTLY),
                 View.MeasureSpec.makeMeasureSpec(1000,View.MeasureSpec.EXACTLY));
@@ -118,8 +123,6 @@ public class CollectionWidget extends AppWidgetProvider {
         chartBitmap.setHasAlpha(true);
 
         return chartBitmap;
-
-
     }
 
 

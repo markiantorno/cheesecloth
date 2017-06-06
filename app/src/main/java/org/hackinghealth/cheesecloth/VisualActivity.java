@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import com.github.mikephil.charting.charts.PieChart;
+
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
@@ -21,8 +21,12 @@ import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import org.hackinghealth.cheesecloth.dao.Category;
 import org.hackinghealth.cheesecloth.dao.Message;
 import org.hackinghealth.cheesecloth.dao.Sender;
+import org.hackinghealth.cheesecloth.dao.Tag;
+import org.hackinghealth.cheesecloth.widget.CustomChartView;
+import org.hackinghealth.cheesecloth.widget.PieChart;
 import org.w3c.dom.Text;
 
 
@@ -41,6 +45,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.dift.ui.SwipeToAction;
+import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmResults;
 
 public class VisualActivity extends AppCompatActivity {
 
@@ -88,14 +95,19 @@ public class VisualActivity extends AppCompatActivity {
 
     List<String> filters;
 
-    String selected;
+    String selected = "";
     YourAdapter adapter;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visual);
         ButterKnife.bind(this);
+
+        pieChart = CustomChartView.styleChart(Realm.getInstance(CheeseClothApplication.getRealmConfiguration()), pieChart, false);
 
         pieChart.setOnChartGestureListener(new OnChartGestureListener() {
             @Override
@@ -111,13 +123,13 @@ public class VisualActivity extends AppCompatActivity {
             @Override
             public void onChartLongPressed(MotionEvent me) {
                 filters = null;
-                calculateFromMessages();
+                //calculateFromMessages();
             }
 
             @Override
             public void onChartDoubleTapped(MotionEvent me) {
                 filters = null;
-                calculateFromMessages();
+                //calculateFromMessages();
             }
 
             @Override
@@ -149,19 +161,39 @@ public class VisualActivity extends AppCompatActivity {
                 selected = ((PieEntry) e).getLabel();
                 Log.d("SELECTED", selected);
 
-                final List<Message> filteredMessages = new ArrayList<>();
-                for (int i = 0; i < messages.size(); i++) {
-                    if (messages.get(i).getCategory().equals(selected)) {
-                        filteredMessages.add(messages.get(i));
-                    }
+                //1111 personal
+                //2222 personal
+                //3333 partner
+
+                Realm realm = Realm.getInstance(CheeseClothApplication.getRealmConfiguration());
+
+                String addr;
+                if (selected.equals("Work")) {
+                    addr = "2222";
+                } else if (selected.equals("Personal")) {
+                    addr = "1111";
+                } else {
+                    addr = "3333";
                 }
 
-                Collections.sort(filteredMessages, new CustomComparator());
+                RealmResults <Message> results = realm.where(Message.class).equalTo("sender.address", addr).findAll();
+                messages = results;
+//
+//                final List<Message> filteredMessages = new ArrayList<>();
+//                for (int i = 0; i < messages.size(); i++) {
+//                    if (messages.get(i).getCategory().equals(selected)) {
+//                        filteredMessages.add(messages.get(i));
+//                    }
+//                }
+//
+//                Collections.sort(filteredMessages, new CustomComparator());
 
-                adapter = new YourAdapter(getBaseContext(), filteredMessages);
+                adapter = new YourAdapter(getBaseContext(), results);
                 listview.setLayoutManager(new LinearLayoutManager(getBaseContext()));
                 listview.setAdapter(adapter);
-                System.out.println("filteredMessages.size() = " + filteredMessages.size());
+
+
+                System.out.println("filteredMessages.size() = " + results.size());
 
             }
 
@@ -171,22 +203,17 @@ public class VisualActivity extends AppCompatActivity {
             }
         });
 
-        this.getValuesFromIntent();
-        this.calculateFromMessages();
 
 
-        final List<Message> filteredMessages = new ArrayList<>();
+        Realm realm = Realm.getInstance(CheeseClothApplication.getRealmConfiguration());
+        RealmResults <Message> results = realm.where(Message.class).findAll();
+        messages = results;
 
-        for (int i = 0; i < this.messages.size(); i++) {
-            if (this.messages.get(i).getCategory().equals(selected)) {
-                filteredMessages.add(this.messages.get(i));
-            }
-        }
-
-        Collections.sort(filteredMessages, new CustomComparator());
-
-        this.adapter = new YourAdapter(this, filteredMessages);
+        this.adapter = new YourAdapter(this, results);
+        listview.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         listview.setAdapter(adapter);
+
+
 
 
         swipeToAction = new SwipeToAction(listview, new SwipeToAction.SwipeListener<Message>() {
@@ -217,24 +244,23 @@ public class VisualActivity extends AppCompatActivity {
     }
 
     private int removeMessage(Message book) {
-        int pos = messages.indexOf(book);
-        messages.remove(book);
-        adapter.notifyItemRemoved(pos);
-        calculateFromMessages();
-
-        final List<Message> filteredMessages = new ArrayList<>();
-        for (int i = 0; i < messages.size(); i++) {
-            if (messages.get(i).getCategory().equals(selected)) {
-                filteredMessages.add(messages.get(i));
-            }
-        }
-
-        Collections.sort(filteredMessages, new CustomComparator());
-
-        adapter = new YourAdapter(getBaseContext(), filteredMessages);
-        listview.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-        listview.setAdapter(adapter);
-        return pos;
+//        int pos = messages.indexOf(book);
+//        messages.remove(book);
+//        adapter.notifyItemRemoved(pos);
+//
+//        final List<Message> filteredMessages = new ArrayList<>();
+//        for (int i = 0; i < messages.size(); i++) {
+//            if (messages.get(i).getCategory().equals(selected)) {
+//                filteredMessages.add(messages.get(i));
+//            }
+//        }
+//
+//        Collections.sort(filteredMessages, new CustomComparator());
+//
+//        adapter = new YourAdapter(getBaseContext(), filteredMessages);
+//        listview.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+//        listview.setAdapter(adapter);
+        return 1;
     }
 
     public class CustomComparator implements Comparator<Message> {
@@ -362,32 +388,32 @@ public class VisualActivity extends AppCompatActivity {
         }
 
 
-        PieDataSet set = new PieDataSet(entries, TITLE);
-        PieData pd = new PieData(set);
-        set.setColors(this.COLORS, 255);
-        set.setValueTextColor(Color.BLACK);
-        set.setValueTextSize(15);
-        set.setDrawValues(!showPercentages);
-        set.setValueFormatter(new ValueFormatter());
-
-        pieChart.setEntryLabelColor(Color.BLACK);
-        pieChart.setEntryLabelTextSize(15);
-        pieChart.setDrawCenterText(!showPercentages);
-        //pieChart.setCenterText( "");
-        pieChart.setCenterText(numValues + "");
-        pieChart.setCenterTextSize(25);
-        pieChart.getLegend().setEnabled(false);
-        Description dd = new Description();
-        dd.setText("");
-        pieChart.setHoleRadius(25);
-        pieChart.setHoleColor(Color.TRANSPARENT);
-        pieChart.setTransparentCircleRadius(25);
-
-
-        pieChart.setDescription(dd);
-        this.pieChart.setData(pd);
-
-        this.pieChart.invalidate();
+//        PieDataSet set = new PieDataSet(entries, TITLE);
+//        PieData pd = new PieData(set);
+//        set.setColors(this.COLORS, 255);
+//        set.setValueTextColor(Color.BLACK);
+//        set.setValueTextSize(15);
+//        set.setDrawValues(!showPercentages);
+//        set.setValueFormatter(new ValueFormatter());
+//
+//        pieChart.setEntryLabelColor(Color.BLACK);
+//        pieChart.setEntryLabelTextSize(15);
+//        pieChart.setDrawCenterText(!showPercentages);
+//        //pieChart.setCenterText( "");
+//        pieChart.setCenterText(numValues + "");
+//        pieChart.setCenterTextSize(25);
+//        pieChart.getLegend().setEnabled(false);
+//        Description dd = new Description();
+//        dd.setText("");
+//        pieChart.setHoleRadius(25);
+//        pieChart.setHoleColor(Color.TRANSPARENT);
+//        pieChart.setTransparentCircleRadius(25);
+//
+//
+//        pieChart.setDescription(dd);
+//        this.pieChart.setData(pd);
+//
+//        this.pieChart.invalidate();
 
     }
 

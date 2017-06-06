@@ -38,7 +38,7 @@ public class CustomChartView extends RelativeLayout {
     final int [] COLORS = new int[]{Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.CYAN, Color.MAGENTA};
 
     protected View mRootView;
-    protected Typeface mTf;
+    static protected Typeface mTf;
     protected Realm mRealm;
 
     @BindView(R.id.pie_chart)
@@ -77,12 +77,13 @@ public class CustomChartView extends RelativeLayout {
 
     private void setData() {
 
-        mPieChart = CustomChartView.styleChart(mRealm, mPieChart);
+        mPieChart = CustomChartView.styleChart(mRealm, mPieChart, true);
         mPieChart.animateY(1400);
 
     }
 
-    public static org.hackinghealth.cheesecloth.widget.PieChart styleChart(Realm mRealm, org.hackinghealth.cheesecloth.widget.PieChart piechart) {
+    public static org.hackinghealth.cheesecloth.widget.PieChart styleChart(Realm mRealm, org.hackinghealth.cheesecloth.widget.PieChart piechart
+    , boolean isWidget) {
         RealmResults<CategoryAssociation> result = mRealm.where(CategoryAssociation.class).findAll();
 
         HashMap<String, Float> summation = new HashMap<>();
@@ -129,14 +130,27 @@ public class CustomChartView extends RelativeLayout {
         piechart.setBackgroundColor(Color.TRANSPARENT);
         piechart.setHoleColor(Color.TRANSPARENT);
         piechart.setHoleRadius(20);
+
+        piechart.setEntryLabelColor(Color.WHITE);
+        piechart.setEntryLabelTextSize(20);
+        piechart.setEntryLabelTypeface(mTf);
+
         piechart.setTransparentCircleRadius(20);
         piechart.getLegend().setEnabled(false);
         Description description = new Description();
         description.setText("");
         piechart.setDescription(description);
-        piechart.setDrawEntryLabels(false);
-        piechart.setUsePercentValues(true);
-        data.setDrawValues(false);
+
+        if(isWidget) {
+            piechart.setDrawEntryLabels(false);
+            piechart.setUsePercentValues(true);
+
+            data.setDrawValues(false);
+        } else {
+            piechart.setDrawEntryLabels(true);
+            piechart.setUsePercentValues(true);
+            data.setDrawValues(true);
+        }
         return piechart;
 
     }

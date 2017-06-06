@@ -17,6 +17,7 @@ public class CheeseClothApplication extends Application {
 
     private static CheeseClothApplication instance;
     private static RealmConfiguration sConfig = null;
+    private static Classifier sClassifier;
 
     @Override
     public void onCreate() {
@@ -24,10 +25,14 @@ public class CheeseClothApplication extends Application {
         instance = this;
         Realm.init(getApplicationContext());
         Realm.setDefaultConfiguration(getRealmConfiguration());
-        ClassifierKt.populate();
+        sClassifier = ClassifierKt.populate();
     }
     public static CheeseClothApplication getInstance() {
         return instance;
+    }
+
+    public static Classifier getClassifier() {
+        return sClassifier;
     }
 
     public static RealmConfiguration getRealmConfiguration() {
