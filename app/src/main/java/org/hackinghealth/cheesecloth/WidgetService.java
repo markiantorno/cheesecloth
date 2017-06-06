@@ -3,6 +3,8 @@ package org.hackinghealth.cheesecloth;
 import android.content.Intent;
 import android.widget.RemoteViewsService;
 
+import org.hackinghealth.cheesecloth.widget.WidgetDataProvider;
+
 /**
  * WidgetService is the {@link RemoteViewsService} that will return our RemoteViewsFactory
  */

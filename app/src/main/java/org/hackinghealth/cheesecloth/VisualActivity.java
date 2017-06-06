@@ -1,21 +1,12 @@
 package org.hackinghealth.cheesecloth;
 
-import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.MotionEvent;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
@@ -25,7 +16,6 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
@@ -34,6 +24,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 import org.hackinghealth.cheesecloth.dao.Message;
 import org.hackinghealth.cheesecloth.dao.Sender;
 import org.w3c.dom.Text;
+
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -53,15 +44,6 @@ import co.dift.ui.SwipeToAction;
 
 public class VisualActivity extends AppCompatActivity {
 
-    public void transition(){
-        Intent next = new Intent(VisualActivity.this, DisplayActivity.class);
-        ArrayList <String> strings = new ArrayList<>();
-        for(Message mm : messages){
-            strings.add(mm.toIntentString());
-        }
-        next.putStringArrayListExtra("Strings", strings);
-        startActivity(next);
-    }
 
     /*
         Formatting numbers displayed on the chart
@@ -84,22 +66,16 @@ public class VisualActivity extends AppCompatActivity {
     List<Message> messages;
 
     final String TITLE = "Categorization of Data";
-    final int[] COLORS = new int[]{Color.RED, Color.YELLOW, Color.MAGENTA, Color.BLUE, Color.GREEN, Color.CYAN};
+    final int[] COLORS = new int[]{Color.GREEN, Color.MAGENTA, Color.BLUE, Color.YELLOW, Color.CYAN};
 
-    final int[] temp = new int[]{
-            Color.argb(255, 255, 66, 66),
-            Color.argb(255, 244, 110, 66),
-            Color.argb(255, 244, 155, 66),
-            Color.argb(255, 244, 212, 66),
-            Color.argb(255, 200, 244, 66),
-            Color.argb(255, 122, 244, 66),
-    };
-
-//    @BindView(R.id.textView2)
-//    TextView title;
-
-//    @BindView(R.id.timebar)
-//    SeekBar timebar;
+//    final int[] temp = new int[]{
+//            Color.argb(255, 255, 66, 66),
+//            Color.argb(255, 244, 110, 66),
+//            Color.argb(255, 244, 155, 66),
+//            Color.argb(255, 244, 212, 66),
+//            Color.argb(255, 200, 244, 66),
+//            Color.argb(255, 122, 244, 66),
+//    };
 
     @BindView(R.id.pieChart)
     PieChart pieChart;
@@ -108,8 +84,6 @@ public class VisualActivity extends AppCompatActivity {
     RecyclerView listview;
 
     SwipeToAction swipeToAction;
-//    @BindView(R.id.toggle)
-//    ToggleButton toggle;
 
 
     boolean showPercentages = false;
@@ -126,30 +100,6 @@ public class VisualActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visual);
         ButterKnife.bind(this);
-
-
-//        title.setTextSize(30);
-//        title.setText("23");
-
-//        timebar.setProgress(23);
-//        timebar.setMax(23);
-//        timebar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-//                title.setText(i + "");
-//                calculateFromMessages();
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//        });
 
         pieChart.setOnChartGestureListener(new OnChartGestureListener() {
             @Override
@@ -204,8 +154,8 @@ public class VisualActivity extends AppCompatActivity {
                 Log.d("SELECTED", selected);
 
                 final List<Message> filteredMessages = new ArrayList<>();
-                for(int i=0; i<messages.size(); i++){
-                    if(messages.get(i).getCategory().equals(selected)){
+                for (int i = 0; i < messages.size(); i++) {
+                    if (messages.get(i).getCategory().equals(selected)) {
                         filteredMessages.add(messages.get(i));
                     }
                 }
@@ -225,37 +175,14 @@ public class VisualActivity extends AppCompatActivity {
             }
         });
 
-//        toggle.setBackgroundColor(Color.BLACK);
-//        toggle.setTextColor(Color.WHITE);
-//        toggle.setText("Value ON");
-//        toggle.setTextOff("Value OFF");
-//        toggle.setTextOn("Value ON");
-//
-//        toggle.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // Is the toggle on?
-//                boolean on = ((ToggleButton) view).isChecked();
-//                if (on) {
-//                    showPercentages = true;
-//                } else {
-//                    // Disable vibrate
-//                    showPercentages = false;
-//                }
-//
-//                calculateFromMessages();
-//            }
-//        });
-
         this.getValuesFromIntent();
         this.calculateFromMessages();
 
 
-
         final List<Message> filteredMessages = new ArrayList<>();
 
-        for(int i=0; i<this.messages.size(); i++){
-            if(this.messages.get(i).getCategory().equals(selected)){
+        for (int i = 0; i < this.messages.size(); i++) {
+            if (this.messages.get(i).getCategory().equals(selected)) {
                 filteredMessages.add(this.messages.get(i));
             }
         }
@@ -281,7 +208,7 @@ public class VisualActivity extends AppCompatActivity {
 
             @Override
             public void onClick(Message itemData) {
-              //  displaySnackbar(itemData.getTitle() + " clicked", null, null);
+                //  displaySnackbar(itemData.getTitle() + " clicked", null, null);
             }
 
             @Override
@@ -291,33 +218,24 @@ public class VisualActivity extends AppCompatActivity {
         });
 
 
-//
-
-
     }
 
     private int removeMessage(Message book) {
         int pos = messages.indexOf(book);
         messages.remove(book);
         adapter.notifyItemRemoved(pos);
-       // adapter.notifyDataSetChanged();
+        // adapter.notifyDataSetChanged();
         calculateFromMessages();
         return pos;
     }
 
-        public class CustomComparator implements Comparator<Message> {
+    public class CustomComparator implements Comparator<Message> {
         @Override
         public int compare(Message o1, Message o2) {
             return o1.getUrgency() < o2.getUrgency() ? 1 : -1;
         }
     }
 
-
-    /*
-        Retrieve values somehow
-            DB / Intent
-            Store on this.messages
-     */
     private void getValuesFromIntent() {
         this.messages = new ArrayList<>();
         Random random = new Random();
@@ -328,12 +246,13 @@ public class VisualActivity extends AppCompatActivity {
             Date selDate = cal.getTime();
             Log.d("Date", selDate.toString());
 
-            Message m =Message.newBuilder().date(selDate).text("Message " + i +" goes here").sender(Sender.newBuilder().name("Steven").build()).build();
+            Message m = Message.newBuilder().text("Message " + i + " goes here").sender(Sender.newBuilder().name("Steven").build()).build();
+            m.setDate(selDate);
+
             this.messages.add(m);
         }
 
     }
-
 
     List<Integer> catVal;
     List<String> catName;
@@ -345,8 +264,9 @@ public class VisualActivity extends AppCompatActivity {
     private void calculateFromMessages() {
 
         Calendar cal = Calendar.getInstance();
-       // cal.set(2017, 5, 5, Integer.parseInt(title.getText().toString()), 0, 0);
+        // cal.set(2017, 5, 5, Integer.parseInt(title.getText().toString()), 0, 0);
         cal.set(2017, 5, 5, 23, 0, 0);
+
         Date selDate = cal.getTime();
 
 
@@ -376,10 +296,7 @@ public class VisualActivity extends AppCompatActivity {
         this.entries = new ArrayList<>();
         this.catVal = new ArrayList<>();
         this.catName = new ArrayList<>();
-
-
         for (int i = 0; i < this.messages.size(); i++) {
-
 
             if (this.messages.get(i).getDate().compareTo(selDate) <= 0) {
                 if (!this.catName.contains(this.messages.get(i).getCategory())) {
@@ -439,7 +356,7 @@ public class VisualActivity extends AppCompatActivity {
 
         PieDataSet set = new PieDataSet(entries, TITLE);
         PieData pd = new PieData(set);
-        set.setColors(this.temp, 255);
+        set.setColors(this.COLORS, 255);
         set.setValueTextColor(Color.BLACK);
         set.setValueTextSize(15);
         set.setDrawValues(!showPercentages);
@@ -449,7 +366,7 @@ public class VisualActivity extends AppCompatActivity {
         pieChart.setEntryLabelTextSize(15);
         pieChart.setDrawCenterText(!showPercentages);
         //pieChart.setCenterText( "");
-         pieChart.setCenterText(numValues + "");
+        pieChart.setCenterText(numValues + "");
         pieChart.setCenterTextSize(25);
         pieChart.getLegend().setEnabled(false);
         Description dd = new Description();

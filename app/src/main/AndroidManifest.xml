@@ -2,9 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.hackinghealth.cheesecloth">
 
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_SMS" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
+
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.READ_SMS"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+
 
     <application
         android:name=".CheeseClothApplication"
@@ -22,7 +25,7 @@
                 intent-filter android.appwidget.action.APPWIDGET_UPDATE and the
                 meta-data for our XML widget configuration
         -->
-        <receiver android:name=".CollectionWidget">
+        <receiver android:name=".widget.CollectionWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -36,8 +39,10 @@
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BROADCAST_SMS">
-            <intent-filter android:priority="1000">
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+
             </intent-filter>
         </receiver>
 
@@ -51,16 +56,14 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main" />
+            android:label="@string/title_activity_main"
+            />
         <activity android:name=".VisualActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".DisplayActivity">
-
         </activity>
     </application>
 

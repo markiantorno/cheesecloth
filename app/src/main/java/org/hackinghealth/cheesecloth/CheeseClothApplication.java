@@ -2,6 +2,8 @@ package org.hackinghealth.cheesecloth;
 
 import android.app.Application;
 
+import org.hackinghealth.cheesecloth.algo.Classifier;
+import org.hackinghealth.cheesecloth.algo.ClassifierKt;
 import org.hackinghealth.cheesecloth.dao.SimpleRealmModule;
 
 import io.realm.Realm;
@@ -22,6 +24,7 @@ public class CheeseClothApplication extends Application {
         instance = this;
         Realm.init(getApplicationContext());
         Realm.setDefaultConfiguration(getRealmConfiguration());
+        ClassifierKt.populate();
     }
     public static CheeseClothApplication getInstance() {
         return instance;

@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradback"
     android:orientation="vertical"
     android:weightSum="5"
-    android:background="@drawable/gradback"
     tools:context="org.hackinghealth.cheesecloth.VisualActivity">
 
 
@@ -15,7 +15,7 @@
         android:layout_height="0dp"
         android:layout_weight="3"
         android:padding="10dp">
-    <!--<TextView-->
+        <!--<TextView-->
         <!--android:id="@+id/textView2"-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
@@ -24,13 +24,13 @@
         <!--android:layout_centerHorizontal="true"-->
         <!--android:layout_marginTop="15dp" />-->
 
-    <!--<ToggleButton-->
+        <!--<ToggleButton-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:layout_below="@id/textView2"-->
         <!--android:id="@+id/toggle"/>-->
 
-    <!--<SeekBar-->
+        <!--<SeekBar-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:id="@+id/timebar"-->
@@ -39,20 +39,19 @@
         <!--android:layout_alignParentStart="true"-->
         <!--android:layout_marginTop="33dp" />-->
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/pieChart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
 
-        />
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieChart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/visuallistview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
-        android:id="@+id/visuallistview"></android.support.v7.widget.RecyclerView>
-
+        android:layout_weight="2"></android.support.v7.widget.RecyclerView>
 
 
 </LinearLayout>
