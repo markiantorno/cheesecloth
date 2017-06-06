@@ -1,7 +1,9 @@
 package org.hackinghealth.cheesecloth;
 
+import android.Manifest;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +50,7 @@ import co.dift.ui.SwipeToAction;
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
+import pub.devrel.easypermissions.EasyPermissions;
 
 public class VisualActivity extends AppCompatActivity {
 
@@ -106,7 +109,12 @@ public class VisualActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visual);
         ButterKnife.bind(this);
+        EasyPermissions.requestPermissions(this, "This app needs SMS to sort thems",
+                1001, Manifest.permission.READ_SMS);
 
+        EasyPermissions.requestPermissions(this, "This app needs SMS to sort thems",
+                1001, Manifest.permission.READ_CONTACTS);
+        
         pieChart = CustomChartView.styleChart(Realm.getInstance(CheeseClothApplication.getRealmConfiguration()), pieChart, false);
 
         pieChart.setOnChartGestureListener(new OnChartGestureListener() {
@@ -485,5 +493,11 @@ public class VisualActivity extends AppCompatActivity {
         this.calculateFromMessages();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+        // EasyPermissions handles the request result.
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
 }
